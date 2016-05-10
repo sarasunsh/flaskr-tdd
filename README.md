@@ -311,23 +311,22 @@ Essentially, we want to open a database connection, create the database based on
           with app.open_resource('schema.sql', mode='r') as f:
               db.cursor().executescript(f.read())
           db.commit()
-
-  ```python
-    :sunny: *The context is typically used to cache resources on there that need to be created on a per-request or usage case. For instance database connects are destined to go there. When storing things on the application context unique names should be chosen as this is a place that is shared between Flask applications and extensions.The most common usage is to split resource management into two parts: 1) an implicit resource caching on the context. 2) a context teardown based resource deallocation.-- Generally there would be a get_X() function that creates resource X if it does not exist yet and otherwise returns the same resource, and a teardown_X() function that is registered as teardown handler. Read more about app_context here: http://flask.pocoo.org/docs/0.10/appcontext/*
-    
-   :sunny: *Opens a resource from the application’s resource folder.*
-    
   ```
+:sunny: *The context is typically used to cache resources on there that need to be created on a per-request or usage case. For instance database connects are destined to go there. When storing things on the application context unique names should be chosen as this is a place that is shared between Flask applications and extensions.The most common usage is to split resource management into two parts: 1) an implicit resource caching on the context. 2) a context teardown based resource deallocation.-- Generally there would be a get_X() function that creates resource X if it does not exist yet and otherwise returns the same resource, and a teardown_X() function that is registered as teardown handler. Read more about app_context here: http://flask.pocoo.org/docs/0.10/appcontext/*
+    
+:sunny: *Opens a resource from the application’s resource folder.*
+    
+  ```python
   # open database connection
   def get_db():
       if not hasattr(g, 'sqlite_db'):
           g.sqlite_db = connect_db()
       return g.sqlite_db
-      
-     ```python
-    :sunny: *We store our current database connection on the special g object that Flask provides for us. This object stores information for one request only and is available from within each function. Never store such things on other objects because this would not work with threaded environments. That special g object does some magic behind the scenes to ensure it does the right thing.*
+  ```      
+:sunny: *We store our current database connection on the special g object that Flask provides for us. This object stores information for one request only and is available from within each function. Never store such things on other objects because this would not work with threaded environments. That special g object does some magic behind the scenes to ensure it does the right thing.*
     
-  ```
+ ```python
+
 
   # close database connection
   @app.teardown_appcontext
