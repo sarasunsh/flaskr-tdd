@@ -520,6 +520,7 @@ Let's get these all green, one at a time...
       entries = cur.fetchall()
       return render_template('index.html', entries=entries)
   ```
+:sunny: *The rows returned from the cursor are tuples with the columns ordered like specified in the select statement. This is good enough for small applications like here, but you might want to convert them into a dict.*
 
 1. Then add the *index.html* template to the "templates" folder:
 
@@ -610,6 +611,10 @@ Let's get these all green, one at a time...
   ```
 
   In the above `login()` function, the decorator indicates that the route can accept either a GET or POST request. Put simply, a request is initiated by the end user when they access the `/login` url. The difference between these requests is simple - GET is used for simply accessing a webpage, while POST is used when information is sent to the server. Thus, when a user simply accesses the `/login` url, they are using a GET request, but when they attempt to login, a POST request is used.
+  
+  :sunny: *Login checks the username and password against the ones from the configuration and sets the logged_in key in the session. If the user logged in successfully, that key is set to True, and the user is redirected back to the show_entries page. In addition, a message is flashed that informs the user that he or she was logged in successfully. If an error occurred, the template is notified about that, and the user is asked again*
+  
+  *The logout function, on the other hand, removes that key from the session again. We use a neat trick here: if you use the pop() method of the dict and pass a second parameter to it (the default), the method will delete the key from the dictionary if present or do nothing when that key is not in there. This is helpful because now we don’t have to check if the user was logged in.*
 
 1. Add the template, "login.html":
 
