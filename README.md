@@ -10,17 +10,6 @@ Also, if you are completely new to Flask and/or web development in general, it's
 
 > **NOTE**: This tutorial is powered by **[Real Python](https://realpython.com)**. Please support this open source project by purchasing our [courses](http://www.realpython.com/courses) to learn Python and web development with Django and Flask!
 
-### Change Log
-
-- 01/24/2016: Updated to Python 3! (v3.5.1)
-- 08/24/2014: PEP8 updates.
-- 02/25/2014: Upgraded to SQLAlchemy.
-- 02/20/2014: Completed AJAX.
-- 12/06/2013: Added Bootstrap 3 styles
-- 11/29/2013: Updated unit tests.
-- 11/19/2013: Fixed typo. Updated unit tests.
-- 11/11/2013: Added information on requests.
-
 ### Contents
 
 1. [Test Driven Development?](#test-driven-development)
@@ -106,7 +95,7 @@ Let's start with a simple "hello, world" app.
   $ touch app-test.py
   ```
 
-  Open this file in your favorite text editor. (I use [Sublime](http://www.sublimetext.com/).) Add the following code:
+  Open this file in your favorite text editor. Add the following code:
 
   ```python
   from app import app
@@ -128,6 +117,8 @@ Let's start with a simple "hello, world" app.
   ```
 
   Essentially, we're testing whether the response that we get back is "200" and that "Hello, World!" is displayed.
+ 
+  :sunny: *A test case is the smallest unit of testing. It checks for a specific response to a particular set of inputs. unittest provides a base class, TestCase, which may be used to create new test cases. read more about unittest here: https://docs.python.org/2.7/library/unittest.html*
 
 1. Run the test
 
@@ -262,6 +253,8 @@ Let's create the basic file for running our application. Before that though, we 
 
   Here, we add in all required imports, create a configuration section for global variables, initialize the app, and then finally run the app.
 
+    :sunny: *from_object() will look at the given object (if it’s a string it will import it) and then look for all uppercase variables defined there. In our case, the configuration we just wrote a few lines of code above. You can also move that into a separate file.*
+
 1. Run it:
 
   ```sh
@@ -319,13 +312,22 @@ Essentially, we want to open a database connection, create the database based on
               db.cursor().executescript(f.read())
           db.commit()
 
-
+  ```python
+    :sunny: *The context is typically used to cache resources on there that need to be created on a per-request or usage case. For instance database connects are destined to go there. When storing things on the application context unique names should be chosen as this is a place that is shared between Flask applications and extensions.The most common usage is to split resource management into two parts: 1) an implicit resource caching on the context. 2) a context teardown based resource deallocation.-- Generally there would be a get_X() function that creates resource X if it does not exist yet and otherwise returns the same resource, and a teardown_X() function that is registered as teardown handler. Read more about app_context here: http://flask.pocoo.org/docs/0.10/appcontext/*
+    
+   :sunny: *Opens a resource from the application’s resource folder.*
+    
+  ```
   # open database connection
   def get_db():
       if not hasattr(g, 'sqlite_db'):
           g.sqlite_db = connect_db()
       return g.sqlite_db
-
+      
+     ```python
+    :sunny: *We store our current database connection on the special g object that Flask provides for us. This object stores information for one request only and is available from within each function. Never store such things on other objects because this would not work with threaded environments. That special g object does some magic behind the scenes to ensure it does the right thing.*
+    
+  ```
 
   # close database connection
   @app.teardown_appcontext
