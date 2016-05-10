@@ -8,6 +8,8 @@ Also, if you are completely new to Flask and/or web development in general, it's
 1. What a "request" is.
 1. How HTML pages are rendered and/or returned to the end user.
 
+:sunny: *Quick word about decorators: applying a decorator to an arbitrary function and then calling function, is the equivalent of calling decorator(function). Guide here: http://avinashv.net/2008/04/python-decorators-syntactic-sugar/*
+
 > **NOTE**: This tutorial is powered by **[Real Python](https://realpython.com)**. Please support this open source project by purchasing our [courses](http://www.realpython.com/courses) to learn Python and web development with Django and Flask!
 
 ### Contents
@@ -355,6 +357,8 @@ Essentially, we want to open a database connection, create the database based on
 ## Templates and Views
 
 Next, we need to set up the Templates and associated Views, which define the routes. Think about this from a user standpoint. We need to log users in and out. Once logged in, users need to be able to post. Finally, we need to display posts.
+ 
+  :sunny: *The view section of the app is largely the meat and potatoes of any Flask app. It's where the routing for urls are done, where rules around how to generate html templates are written, and it's also where other methods for processing user input are stored.*
 
 Write some tests for this first.
 
